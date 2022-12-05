@@ -1,0 +1,1 @@
+python3 pile.py test.txt
