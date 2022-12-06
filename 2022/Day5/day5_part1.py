@@ -75,7 +75,7 @@ for colone in colones :
 	colone_refaite = [value for value in colones[colones.index(colone)] if value != case]
 	colones[colones.index(colone)] = colone_refaite
 
-print("colones : ", colones)
+#print("colones : ", colones)
 #PARSEUR FINI DES COLONES
 
 #MAINTENANT les moves
@@ -103,14 +103,7 @@ for ind in indications :				#pour chaque indications
 		col_de.pop(-1)							#et on supprier le dernier elme de col_de
 		colones[de] = col_de					#on remet col_de dans colones
 		colones[pour] = col_pour				#on remet col_pour dans colones
-		
-		#TRAITEMENT des ''
-		for case in colones[de] :	#pour toutes les case dans colones [de -1]
-			if case == '' and colones[de].index(case) != len(colones[de])-1 :			#on regarde si la case est egal a '' et que cet element n'est pas l'ement de la fin
-				colones[de].pop(colones[de].index(case))								#on supprimer ce ''
-		for case in colones[pour] :	#de meme pour pour
-			if case == '' and colones[pour].index(case) != len(colones[pour])-1 :
-				colones[pour].pop(colones[pour].index(case))
+
 	#print("new colones :", colones, "\n")
 
 

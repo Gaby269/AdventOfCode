@@ -89,35 +89,26 @@ for line in lines :					#pour chaque ligne
 
 #LECTURE de indications
 for ind in indications :				#pour chaque indications
-	#print("Indicationn ", indications.index(ind))
+	print("Indicationn ", indications.index(ind))
+	#RECUPERATION INFOS
 	nb = int(ind[0])					#on stocke le nb de case a bouger
 	de = int(ind[1])-1					#on stocke de quelle colone ca doit venir	
 	pour = int(ind[2])-1				#on stocke pour quelle colone ca doit aller
 	col_de = colones[de]				#on recupere les colones concerné
-	#print("de : ", de, "colone de", col_de)
 	col_pour = colones[pour]
-	#print("pour : ", pour, "colones pour", col_pour)
-	for i in range(nb) :					#pour chaque indice autant de fois qu'il faut (nb)
-		#print("colones : ", colones)
-		tailleAvant = len(col_pour)				#taille avant l'ajout
-		col_pour.append(col_de[len(col_de)-1])	#on ajoute le dernier element de col_de dans col_pour
-		col_de.pop(-1)							#et on supprier le dernier elme de col_de
-		colones[de] = col_de					#on remet col_de dans colones
-		colones[pour] = col_pour				#on remet col_pour dans colones
-		
-		#TRAITEMENT des ''
-		for case in colones[de] :	#pour toutes les case dans colones [de -1]
-			if case == '' and colones[de].index(case) != len(colones[de])-1 :			#on regarde si la case est egal a '' et que cet element n'est pas l'ement de la fin
-				colones[de].pop(colones[de].index(case))								#on supprimer ce ''
-		for case in colones[pour] :	#de meme pour pour
-			if case == '' and colones[pour].index(case) != len(colones[pour])-1 :
-				colones[pour].pop(colones[pour].index(case))
-	#print("new colones :", colones, "\n")
+	#TRAITEMENT
+	col_pour.extend(col_de[-nb:])			#on ajoute les nb derniers elements 
+	col_de = [c for c in col_de[:-nb]]		#et on supprier les nb dernier elem
+	#REMET DANS COLONES
+	colones[de] = col_de					#on remet col_de dans colones
+	colones[pour] = col_pour				#on remet col_pour dans colones
+	#print("new colone", colones)
 
 
 #AFFICHAGE FINAL
 dernierString = ''
 for case in colones :
+	#print(colones)
 	dernierString = dernierString + case[-1]
 print("La suite des derniers elements des colones est : ", dernierString)
 
