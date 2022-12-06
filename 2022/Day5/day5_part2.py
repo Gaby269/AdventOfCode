@@ -78,6 +78,7 @@ for colone in colones :
 print("colones : ", colones)
 #PARSEUR FINI DES COLONES
 
+
 #MAINTENANT les moves
 indications = []					#tableau des mouvements a faire
 for line in lines :					#pour chaque ligne
