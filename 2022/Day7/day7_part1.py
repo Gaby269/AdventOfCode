@@ -52,21 +52,21 @@ file.close()
 tabTaille = []
 tailleDossier = 0
 index = 0
-for dossier in fichiers :
-	d = dossier[0]
-	#print(d)
-	for fichier in dossier[1:] :
+for dossier in fichiers :						#parcours des fichiers contenu dans fichiers
+	nomDossier = dossier[0][0]					#nom du dossier est dossier[0][0] sans le /
+	print("nomDossier = ", nomDossier)
+	for fichier in dossier[1:] :					#pour chaque dossier sans le nom du dossier
 		f = fichier.split(' ')
-		#print(f)
+		print("Liste des fichiers dans le dossier",nomDossier,":", f)
 		if f[0] == 'dir' :
 			d = f[1]
-			#print("d: ", d)
+			print("d: ", d)
 			for i in range(len(fichiers)) :
 				if fichiers[i][0] == d+'/' :
 					print("fichier", fichiers[i][0])
 					index = i
 			dossierCourant = fichiers[index]
-			#print("dossierCourant : ", dossierCourant)
+			print("dossierCourant : ", dossierCourant)
 			for i in range(len(dossierCourant)) :
 				if dossierCourant[i][:3] != "dir" and dossierCourant[i][-1] != '/' :
 					number = ''
@@ -78,36 +78,8 @@ for dossier in fichiers :
 			#print("tab", tabTaille)
 			tailleDossier = 0
 		else :
-			tailleDossier += int(f[0])
-
-
-def recu(tb) :
-	for fichier in dossier[1:] :
-		f = fichier.split(' ')
-		#print(f)
-		if f[0] == 'dir' :
-			d = f[1]
-			#print("d: ", d)
-			for i in range(len(fichiers)) :
-				if fichiers[i][0] == d+'/' :
-					print("fichier", fichiers[i][0])
-					index = i
-			dossierCourant = fichiers[index]
-			#print("dossierCourant : ", dossierCourant)
-			for i in range(len(dossierCourant)) :
-				if dossierCourant[i][:3] != "dir" and dossierCourant[i][-1] != '/' :
-					number = ''
-					for c in dossierCourant[i] :
-						if c in string.digits :
-							number += c
-					tailleDossier += int(number)
-			tabTaille.append([f[1], tailleDossier])
-			#print("tab", tabTaille)
-			tailleDossier = 0
-		else :
-			tailleDossier += int(f[0])
-#print(tabTaille)
-
+			#tailleDossier += int(f[0])
+			print("tailleDossier")
 
 somme = 0
 for dossier in tabTaille :
@@ -117,6 +89,21 @@ for dossier in tabTaille :
 	
 for dossier in tabTaille : 
 	somme += tabTaille[tabTaille.index(dossier)][1]
-print(tabTaille)
+print("tabTaille Finale :", tabTaille)
+
+for dossier in tabTaille :
+	for i in range(len(fichiers)) :
+		if fichiers[i][0] == dossier[0]+'/' :
+			print("fichier", fichiers[i][0])
+			index = i
+	dossierCourant = fichiers[index]
+	print("dossierCourant", dossierCourant)
+	print(dossier)
+	print("coucou", ('dir '+dossier[0]) in fichiers[fichiers.index(dossierCourant)])
+
+	print(dossier[0])
+	if 'dir '+dossier[0] in fichiers[fichiers.index(dossierCourant)][0][0] in dossier[0] :
+		print("ouii")
+	print(dossier[1])
 
 print("La somme est donc : ", somme)
