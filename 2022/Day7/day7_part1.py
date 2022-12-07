@@ -1,4 +1,4 @@
-import sys
+import sys, string
 
 #PARAMETERS
 if (len(sys.argv) != 2):
@@ -14,29 +14,109 @@ file = open(name_file, "r")
 lines = file.readlines()
 
 #READING EACH LINE before more
-taille = len(lines[0])
-line = []
-for i in range(taille) :
-	if len(lines[0][:4]) == 4 :
-		line.append(lines[0][:4])							 #comme on a qu'une seule ligne
-		lines[0] = lines[0][1:]
-
-lui = 0
-for case in line :
-	lettres = [case[i] for i in range(4)]
-	if lettres.count(lettres[0]) != 1 :				#si le nombre delement du premier element n'est pas egal a 1 pas bon
-		continue
-	elif lettres.count(lettres[1]) != 1 :				#si le nombre delement du premier element n'est pas egal a 1 pas bon
-		continue
-	elif lettres.count(lettres[2]) != 1 :				#si le nombre delement du premier element n'est pas egal a 1 pas bon
-		continue
-	elif lettres.count(lettres[3]) != 1 :				#si le nombre delement du premier element n'est pas egal a 1 pas bon
-		continue
-	else :
-		lui = line.index(case)
-		break
-print("Le numero est donc : ", lui + 4)
+dossiers = ''								#structure qui caracterise dans quel dossier ont est
+fichiers = [] 
+for line in lines :
+	if line[0] == '$' :					#si on est une commande
+		#print(line)
+		l = line.split(' ')
+		#print(l)
+		if l[1] == 'cd' :
+			if l[2] == '/\n' :			#si c'est le repertoire pere
+				dossiers += '/'
+				#print("dossiers / : ", dossiers)
+			elif l[2] == '..\n' :		#si on descend
+				dossiers = dossiers[:-2]			#-2 car a/ par ex
+				#print("dossiers .. : ", dossiers)
+			else :
+				dossiers += l[2]				#ajouter la lettre
+				dossiers = dossiers[:-1]			#enlever le \n
+				dossiers += '/'					#ajouter /
+				#print("dossiers lettre ", dossiers)
+		else : 									#je suis ls
+			fichiers.append([dossiers[-2:].strip()])	#ajout du nom du dossier dans le tableau des fichiers pour avoir un nouveau dossier
+			#print("fichiers : ", fichiers)
+			continue					#on passe a la ligne suivante
+	else :								#si on est pas une commande on fait un affichage
+		#print(fichiers[-1])
+		fichiers[-1].append(line.strip())
+#print("fichiers apres ajouts du fichier : ", fichiers)
+#on a dans fichiers la listes des dossiers et fichiers de chaque dossiers
 
 
 #CLOSING OF FILE
 file.close()
+
+
+#PARCOURS DES FICHIERS
+tabTaille = []
+tailleDossier = 0
+index = 0
+for dossier in fichiers :
+	d = dossier[0]
+	#print(d)
+	for fichier in dossier[1:] :
+		f = fichier.split(' ')
+		#print(f)
+		if f[0] == 'dir' :
+			d = f[1]
+			#print("d: ", d)
+			for i in range(len(fichiers)) :
+				if fichiers[i][0] == d+'/' :
+					print("fichier", fichiers[i][0])
+					index = i
+			dossierCourant = fichiers[index]
+			#print("dossierCourant : ", dossierCourant)
+			for i in range(len(dossierCourant)) :
+				if dossierCourant[i][:3] != "dir" and dossierCourant[i][-1] != '/' :
+					number = ''
+					for c in dossierCourant[i] :
+						if c in string.digits :
+							number += c
+					tailleDossier += int(number)
+			tabTaille.append([f[1], tailleDossier])
+			#print("tab", tabTaille)
+			tailleDossier = 0
+		else :
+			tailleDossier += int(f[0])
+
+
+def recu(tb) :
+	for fichier in dossier[1:] :
+		f = fichier.split(' ')
+		#print(f)
+		if f[0] == 'dir' :
+			d = f[1]
+			#print("d: ", d)
+			for i in range(len(fichiers)) :
+				if fichiers[i][0] == d+'/' :
+					print("fichier", fichiers[i][0])
+					index = i
+			dossierCourant = fichiers[index]
+			#print("dossierCourant : ", dossierCourant)
+			for i in range(len(dossierCourant)) :
+				if dossierCourant[i][:3] != "dir" and dossierCourant[i][-1] != '/' :
+					number = ''
+					for c in dossierCourant[i] :
+						if c in string.digits :
+							number += c
+					tailleDossier += int(number)
+			tabTaille.append([f[1], tailleDossier])
+			#print("tab", tabTaille)
+			tailleDossier = 0
+		else :
+			tailleDossier += int(f[0])
+#print(tabTaille)
+
+
+somme = 0
+for dossier in tabTaille :
+	if dossier[1] >= 100000 :
+		#print(tabTaille[tabTaille.index(dossier)])
+		tabTaille.pop(tabTaille.index(dossier))
+	
+for dossier in tabTaille : 
+	somme += tabTaille[tabTaille.index(dossier)][1]
+print(tabTaille)
+
+print("La somme est donc : ", somme)
