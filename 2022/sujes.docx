@@ -1,0 +1,593 @@
+ 
+Avènement du code
+    • [À propos de] 
+    • [Événements] 
+    • [Boutique] 
+    • [Connexion] 
+   sous y{2022}
+    • [Calendrier] 
+    • [AoC++] 
+    • [Parrains] 
+    • [Classement] 
+    • [Statistiques] 
+
+Nos sponsors contribuent à rendre l'Avent of Code possible : 
+TNG Technology Consulting - Nous résolvons des problèmes informatiques difficiles - toute l'année ! 
+--- Jour 10 : Tube cathodique ---
+Vous évitez les cordes, plongez dans la rivière et nagez jusqu'au rivage.
+Les Elfes crient quelque chose à propos de les retrouver en amont, mais la rivière est trop forte pour dire exactement ce qu'ils disent. Ils finissent de traverser le pont et disparaissent de la vue.
+Des situations comme celle-ci doivent être la raison pour laquelle les Elfes ont donné la priorité au fonctionnement du système de communication sur votre appareil portable. Vous le sortez de votre sac, mais la quantité d'eau qui s'écoule lentement d'une grande fissure dans son écran vous indique qu'il ne sera probablement pas d'une grande utilité immédiate.
+À moins que vous ne puissiez concevoir un système de remplacement pour le système vidéo de l'appareil ! Il semble s'agir d'une sorte d' écran à tube cathodique et d'un simple processeur qui sont tous deux pilotés par un circuit d'horloge précis . Le circuit d'horloge fait tic-tac à un rythme constant; chaque tick est appelé un cycle .
+Commencez par déterminer le signal envoyé par le CPU. Le CPU a un seul registre, X, qui commence par la valeur 1. Il ne prend en charge que deux instructions :
+    • addx Vprend deux cycles à compléter. Après deux cycles, le Xregistre est incrémenté de la valeur V. ( Vpeut être négatif.) 
+    • noopprend un cycle à compléter. Cela n'a pas d'autre effet. 
+Le processeur utilise ces instructions dans un programme (votre entrée de puzzle) pour, d'une manière ou d'une autre, indiquer à l'écran ce qu'il faut dessiner.
+Considérez le petit programme suivant :
+noop
+addx 3
+addx -5
+L'exécution de ce programme se déroule comme suit :
+    • Au début du premier cycle, l' noopinstruction commence son exécution. Au cours du premier cycle, Xest 1. Après le premier cycle, l' noopinstruction termine son exécution sans rien faire. 
+    • Au début du deuxième cycle, l' addx 3instruction commence son exécution. Au cours du deuxième cycle, Xest encore 1. 
+    • Au cours du troisième cycle, Xest encore 1. Après le troisième cycle, l' addx 3instruction termine son exécution en passant Xà 4. 
+    • Au début du quatrième cycle, l' addx -5instruction commence son exécution. Au cours du quatrième cycle, Xest encore 4. 
+    • Au cours du cinquième cycle, Xest encore 4. Après le cinquième cycle, l' addx -5instruction termine son exécution en passant Xà -1. 
+Peut-être pouvez-vous apprendre quelque chose en regardant la valeur du Xregistre tout au long de l'exécution. Pour l'instant, considérez la puissance du signal (le nombre de cycles multiplié par la valeur du Xregistre) pendant le 20e cycle et tous les 40 cycles suivants (c'est-à-dire pendant les 20e, 60e, 100e, 140e, 180e et 220e cycles).
+Par exemple, considérez ce programme plus vaste :
+addx 15
+addx -11
+addx 6
+addx -3
+addx 5
+addx -1
+addx -8
+addx 13
+addx 4
+noop
+addx -1
+addx 5
+addx -1
+addx 5
+addx -1
+addx 5
+addx -1
+addx 5
+addx -1
+addx -35
+addx 1
+addx 24
+addx -19
+addx 1
+addx 16
+addx -11
+noop
+noop
+addx 21
+addx -15
+noop
+noop
+addx -3
+addx 9
+addx 1
+addx -3
+addx 8
+addx 1
+addx 5
+noop
+noop
+noop
+noop
+noop
+addx -36
+noop
+addx 1
+addx 7
+noop
+noop
+noop
+addx 2
+addx 6
+noop
+noop
+noop
+noop
+noop
+addx 1
+noop
+noop
+addx 7
+addx 1
+noop
+addx -13
+addx 13
+addx 7
+noop
+addx 1
+addx -33
+noop
+noop
+noop
+addx 2
+noop
+noop
+noop
+addx 8
+noop
+addx -1
+addx 2
+addx 1
+noop
+addx 17
+addx -9
+addx 1
+addx 1
+addx -3
+addx 11
+noop
+noop
+addx 1
+noop
+addx 1
+noop
+noop
+addx -13
+addx -19
+addx 1
+addx 3
+addx 26
+addx -30
+addx 12
+addx -1
+addx 3
+addx 1
+noop
+noop
+noop
+addx -9
+addx 18
+addx 1
+addx 2
+noop
+noop
+addx 9
+noop
+noop
+noop
+addx -1
+addx 2
+addx -37
+addx 1
+addx 3
+noop
+addx 15
+addx -21
+addx 22
+addx -6
+addx 1
+noop
+addx 2
+addx 1
+noop
+addx -10
+noop
+noop
+addx 20
+addx 1
+addx 2
+addx 2
+addx -6
+addx -11
+noop
+noop
+noop
+Les intensités de signal intéressantes peuvent être déterminées comme suit :
+    • Au cours du 20e cycle, le registre Xa la valeur 21, donc la puissance du signal est de 20 * 21 = 420 . (Le 20e cycle se produit au milieu de la seconde addx -1, donc la valeur de registre Xest la valeur de départ, 1, plus toutes les autres addxvaleurs jusqu'à ce point : 1 + 15 - 11 + 6 - 3 + 5 - 1 - 8 + 13 + 4 = 21.) 
+    • Au cours du 60e cycle, le registre Xa la valeur 19, donc la force du signal est de 60 * 19 = 1140. 
+    • Au cours du 100e cycle, le registre Xa la valeur 18, donc la force du signal est de 100 * 18 = 1800. 
+    • Au cours du 140e cycle, le registre Xa la valeur 21, donc la puissance du signal est de 140 * 21 = 2940. 
+    • Au cours du 180e cycle, le registre Xa la valeur 16, donc la puissance du signal est de 180 * 16 = 2880. 
+    • Au cours du 220e cycle, le registre Xa la valeur 18, donc la puissance du signal est de 220 * 18 = 3960. 
+La somme de ces intensités de signal est 13140.
+Trouvez la force du signal pendant les 20e, 60e, 100e, 140e, 180e et 220e cycles. Quelle est la somme de ces six intensités de signal ?
+Pour jouer, merci de vous identifier via l'un de ces services :
+[GitHub] [Google] [Twitter] [Reddit] - [Comment fonctionne l'authentification ?]
+
+
+
+
+
+
+
+
+
+
+
+ 
+Avènement du code
+    • [À propos de] 
+    • [Événements] 
+    • [Boutique] 
+    • [Connexion] 
+          2022
+    • [Calendrier] 
+    • [AoC++] 
+    • [Parrains] 
+    • [Classement] 
+    • [Statistiques] 
+
+Nos sponsors contribuent à rendre l'Avent of Code possible : 
+Kotlin par JetBrains - Arbres, listes, packages - c'est l'heure de l'avènement du code ! Préparez-vous à résoudre des énigmes dans Kotlin. Regardez-nous diffuser en direct nos discussions sur les solutions des premières énigmes, rejoignez notre classement, gagnez des prix. Joyeuses fêtes! 
+--- Jour 9 : Pont de singe ---
+Ce pont de corde grince lorsque vous marchez dessus. Vous ne savez pas quel âge il a ou s'il peut même supporter votre poids.
+Il semble cependant bien supporter les Elfes. Le pont enjambe une gorge qui a été creusée par la rivière massive bien en dessous de vous.
+Vous marchez prudemment; pendant que vous le faites, les cordes s'étirent et se tordent. Vous décidez de vous distraire en modélisant la physique des cordes ; peut-être que vous pouvez même comprendre où ne pas marcher.
+Considérez une corde avec un nœud à chaque extrémité ; ces nœuds marquent la tête et la queue de la corde. Si la tête s'éloigne suffisamment de la queue, la queue est tirée vers la tête.
+En raison d'un raisonnement nébuleux impliquant des longueurs de Planck , vous devriez pouvoir modéliser les positions des nœuds sur une grille à deux dimensions. Ensuite, en suivant une série hypothétique de mouvements (votre entrée de puzzle) pour la tête, vous pouvez déterminer comment la queue se déplacera.
+En raison des longueurs de Planck susmentionnées , la corde doit être assez courte ; en fait, la tête ( H) et la queue ( T) doivent toujours se toucher (diagonalement adjacentes et même se chevauchant, les deux comptent comme se touchant) :
+....
+.TH.
+....
+
+....
+.H..
+..T.
+....
+
+...
+.H. (H covers T)
+...
+Si la tête est à deux pas directement vers le haut, le bas, la gauche ou la droite de la queue, la queue doit également se déplacer d'un pas dans cette direction pour rester suffisamment proche :
+.....    .....    .....
+.TH.. -> .T.H. -> ..TH.
+.....    .....    .....
+
+...    ...    ...
+.T.    .T.    ...
+.H. -> ... -> .T.
+...    .H.    .H.
+...    ...    ...
+Sinon, si la tête et la queue ne se touchent pas et ne sont pas dans la même ligne ou colonne, la queue se déplace toujours d'un pas en diagonale pour suivre :
+.....    .....    .....
+.....    ..H..    ..H..
+..H.. -> ..... -> ..T..
+.T...    .T...    .....
+.....    .....    .....
+
+.....    .....    .....
+.....    .....    .....
+..H.. -> ...H. -> ..TH.
+.T...    .T...    .....
+.....    .....    .....
+Vous avez juste besoin de déterminer où va la queue pendant que la tête suit une série de mouvements. Supposons que la tête et la queue commencent toutes les deux à la même position, se chevauchant.
+Par exemple:
+R 4
+U 4
+L 3
+D 1
+R 4
+D 1
+L 5
+R 2
+This series of motions moves the head right four steps, then up four steps, then left three steps, then down one step, and so on. After each step, you'll need to update the position of the tail if the step means the head is no longer adjacent to the tail. Visually, these motions occur as follows (s marks the starting position as a reference point):
+== Initial State ==
+
+......
+......
+......
+......
+H.....  (H covers T, s)
+
+== R 4 ==
+
+......
+......
+......
+......
+TH....  (T covers s)
+
+......
+......
+......
+......
+sTH...
+
+......
+......
+......
+......
+s.TH..
+
+......
+......
+......
+......
+s..TH.
+
+== U 4 ==
+
+......
+......
+......
+....H.
+s..T..
+
+......
+......
+....H.
+....T.
+s.....
+
+......
+....H.
+....T.
+......
+s.....
+
+....H.
+....T.
+......
+......
+s.....
+
+== L 3 ==
+
+...H..
+....T.
+......
+......
+s.....
+
+..HT..
+......
+......
+......
+s.....
+
+.HT...
+......
+......
+......
+s.....
+
+== D 1 ==
+
+..T...
+.H....
+......
+......
+s.....
+
+== R 4 ==
+
+..T...
+..H...
+......
+......
+s.....
+
+..T...
+...H..
+......
+......
+s.....
+
+......
+...TH.
+......
+......
+s.....
+
+......
+....TH
+......
+......
+s.....
+
+== D 1 ==
+
+......
+....T.
+.....H
+......
+s.....
+
+== L 5 ==
+
+......
+....T.
+....H.
+......
+s.....
+
+......
+....T.
+...H..
+......
+s.....
+
+......
+......
+..HT..
+......
+s.....
+
+......
+......
+.HT...
+......
+s.....
+
+......
+......
+HT....
+......
+s.....
+
+== R 2 ==
+
+......
+......
+.H....  (H covers T)
+......
+s.....
+
+......
+......
+.TH...
+......
+s.....
+After simulating the rope, you can count up all of the positions the tail visited at least once. In this diagram, s again marks the starting position (which the tail also visited) and # marks other positions the tail visited:
+..##..
+...##.
+.####.
+....#.
+s###..
+So, there are 13 positions the tail visited at least once.
+Simulez votre série hypothétique complète de mouvements. Combien de positions la queue de la corde visite-t-elle au moins une fois ?
+Pour jouer, merci de vous identifier via l'un de ces services :
+[GitHub] [Google] [Twitter] [Reddit] - [Comment fonctionne l'authentification ?]
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+Avènement du code
+    • [À propos de] 
+    • [Événements] 
+    • [Boutique] 
+    • [Connexion] 
+       y(2022)
+    • [Calendrier] 
+    • [AoC++] 
+    • [Parrains] 
+    • [Classement] 
+    • [Statistiques] 
+
+Nos sponsors contribuent à rendre l'Avent of Code possible : 
+Ahrefs - Travaillez sur le prochain moteur de recherche à usage général, un robot d'exploration de classe mondiale et de véritables mégadonnées. Tirer parti du matériel de pointe et des technologies de programmation avancées. De n'importe où dans le monde. OCaml, ReasonML, Dlang, C++ 
+--- Jour 8 : Treetop Tree House ---
+L'expédition tombe sur une parcelle particulière de grands arbres tous soigneusement plantés dans une grille. Les Elfes expliquent qu'une expédition précédente a planté ces arbres dans le cadre d'un effort de reboisement. Maintenant, ils sont curieux de savoir si ce serait un bon emplacement pour une cabane dans les arbres .
+Tout d'abord, déterminez s'il y a suffisamment de couverture arborée ici pour cacher une cabane dans les arbres . Pour ce faire, vous devez compter le nombre d'arbres visibles de l'extérieur de la grille lorsque vous regardez directement le long d'une ligne ou d'une colonne.
+Les Elfes ont déjà lancé un quadricoptère pour générer une carte avec la hauteur de chaque arbre ( votre puzzle d'entrée ). Par exemple:
+30373
+25512
+65332
+33549
+35390
+Chaque arbre est représenté par un seul chiffre dont la valeur est sa hauteur, où 0est le plus court et 9est le plus haut.
+Un arbre est visible si tous les autres arbres entre lui et un bord de la grille sont plus courts que lui. Ne considérez que les arbres de la même ligne ou colonne ; c'est-à-dire, ne regardez que vers le haut, le bas, la gauche ou la droite d'un arbre donné.
+Tous les arbres autour du bord de la grille sont visibles - puisqu'ils sont déjà sur le bord, il n'y a pas d'arbres pour bloquer la vue. Dans cet exemple, cela ne laisse que les neuf arbres intérieurs à considérer :
+    • Le haut-gauche 5est visible de la gauche et du haut. (Il n'est pas visible de la droite ou du bas car d'autres arbres de hauteur 5gênent.) 
+    • Le milieu supérieur 5est visible du haut et de la droite. 
+    • The top-right 1 is not visible from any direction; for it to be visible, there would need to only be trees of height 0 between it and an edge. 
+    • The left-middle 5 is visible, but only from the right. 
+    • The center 3 is not visible from any direction; for it to be visible, there would need to be only trees of at most height 2 between it and an edge. 
+    • The right-middle 3 is visible from the right. 
+    • In the bottom row, the middle 5 is visible, but the 3 and 4 are not. 
+With 16 trees visible on the edge and another 5 visible in the interior, a total of 21 trees are visible in this arrangement.
+Considérez votre carte; combien d'arbres sont visibles de l'extérieur de la grille ?
+Pour jouer, merci de vous identifier via l'un de ces services :
+[GitHub] [Google] [Twitter] [Reddit] - [Comment fonctionne l'authentification ?]
+
+The expedition comes across a peculiar patch of tall trees all planted carefully in a grid.
+Proposer une meilleure traduction
+
+
+
+
+
+
+ 
+Avènement du code
+    • [À propos de] 
+    • [Événements] 
+    • [Boutique] 
+    • [Connexion] 
+  {:an2022}
+    • [Calendrier] 
+    • [AoC++] 
+    • [Parrains] 
+    • [Classement] 
+    • [Statistiques] 
+
+Nos sponsors contribuent à rendre l'Avent of Code possible : 
+BJSS - Notre personnel est une équipe de solutionneurs de problèmes, expérimentés dans l'évolution des technologies et la fourniture de solutions technologiques de classe mondiale. 
+--- Jour 7 : Il ne reste plus d'espace sur l'appareil ---
+Vous pouvez entendre les oiseaux gazouiller et les gouttes de pluie frapper les feuilles au fur et à mesure de l'expédition. Parfois, vous pouvez même entendre des sons beaucoup plus forts au loin ; quelle est la taille des animaux ici, de toute façon ?
+L'appareil que les Elfes vous ont donné a des problèmes avec plus que son système de communication. Vous essayez d'exécuter une mise à jour du système :
+$ system-update --please --pretty-please-with-sugar-on-top
+Error: No space left on device
+Peut-être pouvez-vous supprimer certains fichiers pour faire de la place pour la mise à jour ?
+Vous parcourez le système de fichiers pour évaluer la situation et enregistrez la sortie du terminal résultante (votre entrée de puzzle). Par exemple:
+$ cd /
+$ ls
+dir a
+14848514 b.txt
+8504156 c.dat
+dir d
+$ cd a
+$ ls
+dir e
+29116 f
+2557 g
+62596 h.lst
+$ cd e
+$ ls
+584 i
+$ cd ..
+$ cd ..
+$ cd d
+$ ls
+4060174 j
+8033020 d.log
+5626152 d.ext
+7214296 k
+Le système de fichiers consiste en une arborescence de fichiers (données brutes) et de répertoires (qui peuvent contenir d'autres répertoires ou fichiers). Le répertoire le plus externe s'appelle /. Vous pouvez naviguer dans le système de fichiers, vous déplacer dans ou hors des répertoires et répertorier le contenu du répertoire dans lequel vous vous trouvez actuellement.
+Dans la sortie du terminal, les lignes qui commencent par $sont des commandes que vous avez exécutées , un peu comme certains ordinateurs modernes :
+    • cdsignifie changer de répertoire . Cela change le répertoire qui est le répertoire courant, mais le résultat spécifique dépend de l'argument : 
+        ? cd x moves in one level: it looks in the current directory for the directory named x and makes it the current directory. 
+        ? cd .. moves out one level: it finds the directory that contains the current directory, then makes that directory the current directory. 
+        ? cd / switches the current directory to the outermost directory, /. 
+    • ls means list. It prints out all of the files and directories immediately contained by the current directory: 
+        ? 123 abc means that the current directory contains a file named abc with size 123. 
+        ? dir xyz means that the current directory contains a directory named xyz. 
+Given the commands and output in the example above, you can determine that the filesystem looks visually like this:
+- / (dir)
+  - a (dir)
+    - e (dir)
+      - i (file, size=584)
+    - f (file, size=29116)
+    - g (file, size=2557)
+    - h.lst (file, size=62596)
+  - b.txt (file, size=14848514)
+  - c.dat (file, size=8504156)
+  - d (dir)
+    - j (file, size=4060174)
+    - d.log (file, size=8033020)
+    - d.ext (file, size=5626152)
+    - k (file, size=7214296)
+Here, there are four directories: / (the outermost directory), a and d (which are in /), and e (which is in a). These directories also contain files of various sizes.
+Since the disk is full, your first step should probably be to find directories that are good candidates for deletion. To do this, you need to determine the total size of each directory. The total size of a directory is the sum of the sizes of the files it contains, directly or indirectly. (Directories themselves do not count as having any intrinsic size.)
+The total sizes of the directories above can be found as follows:
+    • The total size of directory e is 584 because it contains a single file i of size 584 and no other directories. 
+    • The directory a has total size 94853 because it contains files f (size 29116), g (size 2557), and h.lst (size 62596), plus file i indirectly (a contains e which contains i). 
+    • Directory d has total size 24933642. 
+    • As the outermost directory, / contains every file. Its total size is 48381165, the sum of the size of every file. 
+Pour commencer, trouvez tous les répertoires avec une taille totale d' au plus 100000 , puis calculez la somme de leurs tailles totales. Dans l'exemple ci-dessus, ces répertoires sont aet e; la somme de leurs tailles totales est 95437(94853 + 584). (Comme dans cet exemple, ce processus peut compter les fichiers plus d'une fois !)
+Trouvez tous les répertoires avec une taille totale d'au plus 100 000. Quelle est la somme des tailles totales de ces répertoires ?
+Pour jouer, merci de vous identifier via l'un de ces services :
+[GitHub] [Google] [Twitter] [Reddit] - [Comment fonctionne l'authentification ?]
+
+
+
+
+
+
