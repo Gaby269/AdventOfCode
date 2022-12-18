@@ -17,15 +17,16 @@ lines = file.readlines()
 repCourant = ''
 rep = ''
 for l in lines :
-	print(l)
+	print("l : ",l)
 	line = l.split(' ')
 	line = [l.strip() for l in line]
-	print(line, "\n\n")
+	print("line : ", line, "\n\n")
 	if line[0] == '$' :
 		if line[1] == "cd" :
 			if line[2] == '/':				#je suis dans le boss
 				repCourant = line[2]		#je suis dans le repetoire courant /
 				rep += line[2]				#je lajoute a la liste des repetoire
+				print("apres / : ", rep)
 			elif line[2] == ".." :			#je veux descendre
 				i = 1
 				cpt = 0						#compteur pour savoir cb de fois on le fait
@@ -38,7 +39,7 @@ for l in lines :
 					i+=1
 				print("new rep : ", rep)
 
-			else :
+		#else :
 
 
 #CLOSING OF FILE
