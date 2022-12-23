@@ -25,22 +25,30 @@ for l in lines :
 		if line[1] == "cd" :
 			if line[2] == '/':				#je suis dans le boss
 				repCourant = line[2]		#je suis dans le repetoire courant /
-				rep += line[2]				#je lajoute a la liste des repetoire
-				print("apres / : ", rep)
+				rep += line[2]				#je lajoute a la liste des repetoires
+				print("apres ajout : ", rep)
 			elif line[2] == ".." :			#je veux descendre
 				i = 1
-				cpt = 0						#compteur pour savoir cb de fois on le fait
-				while i<len(rep) :			#parcour a lenvers de rep
-					print("ancien : ", rep)
+				cpt = 0;						#compteur pour savoir cb de fois on le fait
+    			while i<len(rep) : 
+                    if rep[-i] == '/' :
+                        cpt+=1
+                        rep.pop(rep[-i+1:])
+                        repCourant = rep[-1]
+                    i+=1
+				print("new rep : ", rep)
+			else : 
+				print(",dkkv")
+		else :
+			print("nfnvz")
+	else : print("d,kfnzikf")
+
+while i<len(rep)+1 :			#parcour a lenvers de rep
+					#print("ancien rep : ", rep)
 					if rep[-i] == '/' :		#si on trouve /
 						cpt+=1				#on ajoute le fait que ce soit le rep qu'on sup
 						rep.pop(rep[-i+1:])					#sup du rep le dernier rep
 					#else :
 					i+=1
-				print("new rep : ", rep)
-
-		#else :
-
-
 #CLOSING OF FILE
 file.close()
