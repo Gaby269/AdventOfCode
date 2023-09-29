@@ -1,4 +1,5 @@
 import sys
+import re
 
 #PARAMETERS
 if (len(sys.argv) != 2):
@@ -14,15 +15,20 @@ file = open(name_file, "r")
 lines = file.readlines()
 
 #READING EACH LINE
-num_fool = 0                        #num final of fool
+num_right = 0                       #nombre de patté de maison à droite
+num_left = 0                        #nombre de patté de maison à gauche
+num 
 for line in lines :                 #for each line
-    for l in line :
-        if l == "(" :
-            num_fool+=1
-        elif l == ")" :
-            num_fool-=1
+    liste = re.findall(r'\w+',line)
+    for l in liste :
+        
+        if l[0] == "R" :
+            num_right += int(l[1])
+        elif l[0] == "L" :
+            num_left+=int(l[1])
+    print(num_right, num_left)
 
-print("Number of fool :", num_fool)
+print("Chemin le plus court :", num_right+num_left)
 
 #CLOSING OF FILE
 file.close()

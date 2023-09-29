@@ -14,15 +14,15 @@ file = open(name_file, "r")
 lines = file.readlines()
 
 #READING EACH LINE
-num_fool = 0                        #num final of fool
-for line in lines :                 #for each line
-    for l in line :
-        if l == "(" :
-            num_fool+=1
-        elif l == ")" :
-            num_fool-=1
+num_final = 0                           #num final of fool
+for l in lines :                        #for each line
+    print(l)
+    if l[0] == "+" :
+        num_final += int(l[1:])
+    else :
+        num_final -= int(l[1:])
 
-print("Number of fool :", num_fool)
+print("La fréquence final est :", num_final)
 
 #CLOSING OF FILE
 file.close()
