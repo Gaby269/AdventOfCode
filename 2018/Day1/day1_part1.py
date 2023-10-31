@@ -16,11 +16,11 @@ lines = file.readlines()
 #READING EACH LINE
 num_final = 0                           #num final of fool
 for l in lines :                        #for each line
-    print(l)
+    
     if l[0] == "+" :
-        num_final += int(l[1:])
+      num_final += int(l[1:])
     else :
-        num_final -= int(l[1:])
+      num_final -= int(l[1:])
 
 print("La fréquence final est :", num_final)
 

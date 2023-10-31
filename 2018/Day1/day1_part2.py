@@ -7,41 +7,22 @@ if (len(sys.argv) != 2):
 
 name_file = sys.argv[1]         #name of file witch use
 
-#READING OF FILE
-file = open(name_file, "r")
-#READING OF LINES
-lines = file.readlines()
-print(lines)
+# Vairable d'initialisation
+freq_courante = 0
+frequence_vue = set()  # Use a set to store frequencies that have been seen
 
-#READING EACH LINE
-num_final = 0                           #num final of fool
-liste_vue = []        
-num_repet = 0
-while num_repet == 0:
-  
-  if not lines:  # Si la line est vide, cela signifie que nous avons atteint la fin du fichier
-    file.seek(0)  # Revenir au début du fichier
-    continue  # Reprendre la lecture depuis le début
-  else :
-    for l in lines :                        #for each line
-      if l[0] == "+" :
-          num_final += int(l[1:])
-          if num_final not in liste_vue :
-            liste_vue.append(num_final)
-          else :
-            num_repet = num_final
-            break
-          break
-      else :
-          num_final -= int(l[1:])
-          if num_final not in liste_vue :
-            liste_vue.append(num_final)
-          else :
-            num_repet = num_final
-            break
-          break
+# Liste des fréquence à partir du fichier en prenant les negatif comme des -
+liste_freq = [int(line.strip()) for line in open(name_file)]
 
-print("La fréquence de répétition est est :", num_repet)
+while True:
+    # Iterate through the list of freqs
+    for freq in liste_freq:
+        freq_courante += freq
 
-#CLOSING OF FILE
-file.close()
+        # Si la fréquence est présente deux fois
+        if freq_courante in frequence_vue:
+            print("Première fréquence qui aparait 2 fois :", freq_courante)
+            exit()  # On sort du programme
+
+        # Ajouter la frequence vue au set
+        frequence_vue.add(freq_courante)
